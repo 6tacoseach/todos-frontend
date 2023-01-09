@@ -63,8 +63,6 @@ const Auth = () => {
 
     if (isLoginMode) {
     } else {
-      console.log('fs', formState.inputs.name.value, formState.inputs.email.value, formState.inputs.password.value)
-      console.log('this is working')
       try {
         const response = await fetch('http://localhost:5050/api/users/signup', {
           method: 'POST',
@@ -72,12 +70,12 @@ const Auth = () => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            name: 'bradelystemarere',
-            email: 'bradely555@gmail.com',
-            password: 'thisismypasswordssdkjlsjd'
+            name: formState.inputs.name.value,
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value
           })
         })
-        console.log('responseData: ', response);
+
         const responseData = await response.json();
         console.log('responseData: ', responseData);
       } catch (err) {
