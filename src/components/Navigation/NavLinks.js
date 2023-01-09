@@ -6,13 +6,10 @@ export const NavLinks = () => {
     return (
         <ul className='nav-links'>
             <li>
-                <NavLink to="/" exact>ALL USERS</NavLink>
+                <NavLink to="/" exact>Home</NavLink>
             </li>
             <li>
-                <NavLink to="/u1/places">MY PLACES</NavLink>
-            </li>
-            <li>
-                <NavLink to="/places/new">ADD PLACES</NavLink>
+                <NavLink to="/completed">Completed Todos</NavLink>
             </li>
             <li>
                 <NavLink to="auth">AUTHENTICATE</NavLink>

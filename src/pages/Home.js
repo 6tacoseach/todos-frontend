@@ -1,13 +1,13 @@
 import React from 'react'
 import TodoForm from '../components/TodoForm'
-import TodoList from '../components/TodoList'
+import UserTodos from '../components/UserTodos'
 import './Home.css'
 
 const Home = () => {
     return (
         <main className='main'>
             <TodoForm />
-            <TodoList />
+            <UserTodos />
         </main>
     )
 }

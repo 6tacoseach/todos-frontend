@@ -1,27 +1,23 @@
 import './App.css';
 import Home from './pages/Home';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import TodoForm from './components/TodoForm';
+import MainNavigation from './components/Navigation/MainNavigation';
 
 
 function App() {
   return (
     <div>
       <Router>
-        {/* <MainNavigation /> */}
-
-        <nav>
-
-        </nav>
+        <MainNavigation />
         <main>
           <Switch>
-            <Route path="/" exact>
+            <Route path="/:userId/todos" exact>
               <Home />
             </Route>
             <Route path="/auth">
               signup
             </Route>
-            <Redirect to="/" />
+            <Redirect to="/:userId/todos" />
           </Switch >
         </main>
       </Router>

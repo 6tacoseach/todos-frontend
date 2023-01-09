@@ -21,7 +21,7 @@ const MainNavigation = (props) => {
 
     return (
         <React.Fragment>
-            {/* React portals will allow us to render something in a different place it would normally be rendered */}
+            {/* React portals will allow us to render something in a different todo it would normally be rendered */}
             {drawerIsOpen && <Backdrop onClick={closeDrawerHandler} />}
             <SideDrawer show={drawerIsOpen} onClick={closeDrawerHandler}>
                 <nav className='main-navigation__drawer-nav'>
@@ -36,7 +36,7 @@ const MainNavigation = (props) => {
                     <span></span>
                 </button>
                 <h1 className="main-navigation__title">
-                    <Link to="/">YourPlaces</Link>
+                    <Link to="/">YourTodos</Link>
                 </h1>
                 <nav className='main-navigation__header-nav'>
                     <NavLinks />

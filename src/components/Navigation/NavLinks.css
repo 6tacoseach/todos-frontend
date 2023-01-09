@@ -13,7 +13,6 @@
 .nav-links li {
     margin: 1rem;
 }
-
 .nav-links a {
     border: 1px solid transparent;
     color: #292929;
@@ -24,8 +23,9 @@
 .nav-links a:hover,
 .nav-links a:active,
 .nav-links a.active {
-    background: #f8df00;
-    border-color: #292929;
+    background: #e2bd73;
+    /* #ed6d35 */
+    border-color: #3d92c2;
     color: #292929;
 }
 
