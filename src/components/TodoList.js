@@ -5,13 +5,12 @@ import TodoItem from './TodoItem'
 import Card from './UIElements/Card/Card'
 
 const TodoList = (props) => {
-    console.log('props: ', props)
     if (props.items.length === 0) {
         return (
-            <div className='place-list center'>
+            <div className='todo-list center'>
                 <Card>
-                    <h2>No Places found. Maybe</h2>
-                    <button>Share Place</button>
+                    <h2>No Todos found. Maybe</h2>
+                    <button>Create Todo</button>
                 </Card>
             </div>
         )

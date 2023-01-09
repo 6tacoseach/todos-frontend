@@ -1,9 +1,10 @@
 import React, { useReducer, useEffect } from 'react'
 import './input.css';
 import { validate } from '../../utils/validators';
+import { Switch } from 'antd';
 
 const inputReducer = (state, action) => {
-    // returns new state based on action
+
     switch (action.type) {
         case 'CHANGE':
             return {
@@ -22,10 +23,6 @@ const inputReducer = (state, action) => {
 }
 
 const Input = (props) => {
-    // when you have 2 or more connected states use useReducer
-    // can manage more complex state and more complexr updates   
-    // a reducer recieves an action and the current state
-    // returns current state and a dispatch function
     const [inputState, dispatch] = useReducer(inputReducer, {
         value: props.initialValue || '',
         isValid: props.initialValid || false,
@@ -39,10 +36,11 @@ const Input = (props) => {
     }, [id, value, isValid, onInput]);
 
     const changeHandler = event => {
-        //store value and validate it
-        // could use useState and have 2 different values to track and change
-        //  useReducer can be used to manage state as well. 
-        dispatch({ type: 'CHANGE', val: event.target.value, validators: props.validators })
+        if (id === 'title' || id === 'description') {
+            dispatch({ type: 'CHANGE', val: event.target.value, validators: props.validators })
+        } else {
+            dispatch({ type: 'CHANGE', val: event, validators: props.validators })
+        }
     }
 
     const touchHandler = () => {
@@ -50,21 +48,32 @@ const Input = (props) => {
             type: 'TOUCH'
         })
     }
-
-    const element = props.element === 'input' ?
-        <input id={props.id}
+    let element;
+    if (props.element === 'input') {
+        element = <input
+            id={props.id}
             type={props.type}
             placeholder={props.placeholder}
             onChange={changeHandler}
             value={inputState.value}
             onBlur={touchHandler}
-        /> :
-        <textarea id={props.id}
+        />
+    } else if (props.element === 'textarea') {
+        element = <textarea
+            id={props.id}
             rows={props.rows || 3}
             onChange={changeHandler}
             value={inputState.value}
             onBlur={touchHandler}
         />
+    } else {
+        element = <Switch
+            id={props.id}
+            defaultChecked={false}
+            checked={inputState.value}
+            onChange={changeHandler}
+        />
+    }
 
     return (
         <div className={`form-control ${!inputState.isValid && isTouched && 'form-control--invalid'}`}>

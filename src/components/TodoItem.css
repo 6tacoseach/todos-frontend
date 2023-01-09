@@ -37,6 +37,7 @@
 
 .todo-item__modal-content {
     padding: 0;
+    height: auto;
 }
 
 .todo-item__modal-actions {
@@ -46,11 +47,6 @@
 .todo-item__actions button,
 .todo-item__actions a {
     margin: 0.5rem;
-}
-
-.map-container {
-    height: 20rem;
-    width: 100rem;
 }
 
 @media (min-width: 768px) {

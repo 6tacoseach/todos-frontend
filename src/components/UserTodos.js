@@ -19,10 +19,9 @@ const DUMMY_TODOS = [
     }
 ]
 const UserTodos = () => {
-    console.log('RENDERRRREDD!!!!');
-    const userId = useParams().userId;
+    // const userId = useParams().userId;
+    const userId = 'u1'
     const loadedTodos = DUMMY_TODOS.filter(todo => todo.creator === userId)
-    console.log('loadedTodos: ', loadedTodos);
 
     return (
         <TodoList items={loadedTodos} />

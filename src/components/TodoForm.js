@@ -3,6 +3,7 @@ import Input from './Form/Input';
 import { useForm } from '../hooks/useForm';
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from '../utils/validators';
 import './TodoForm.css'
+import Button from './UIElements/Button/Button';
 
 const TodoForm = () => {
     const [formState, inputHandler] = useForm({
@@ -11,10 +12,6 @@ const TodoForm = () => {
             isValid: false
         },
         description: {
-            value: '',
-            isValid: false
-        },
-        address: {
             value: '',
             isValid: false
         }
@@ -44,6 +41,7 @@ const TodoForm = () => {
                 errorText="Please enter a valid description (at least 5 characters)"
                 onInput={inputHandler}
             />
+            <Button type='submit' disabled={!formState.isValid}>ADD TODO</Button>
         </form>
     )
 }
