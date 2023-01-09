@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import Button from './UIElements/Button/Button'
-import Card from './UIElements/Card/Card'
+import Button from '../UIElements/Button/Button'
+import Card from '../UIElements/Card/Card'
 import './TodoItem.css'
-import Modal from './UIElements/Modal/Modal'
+import Modal from '../UIElements/Modal/Modal'
 
 const TodoItem = (props) => {
     const [showDeleteWarning, setShowDeleteWarning] = useState(false);

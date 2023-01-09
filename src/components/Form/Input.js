@@ -36,10 +36,10 @@ const Input = (props) => {
     }, [id, value, isValid, onInput]);
 
     const changeHandler = event => {
-        if (id === 'title' || id === 'description') {
-            dispatch({ type: 'CHANGE', val: event.target.value, validators: props.validators })
-        } else {
+        if (id === 'complete') {
             dispatch({ type: 'CHANGE', val: event, validators: props.validators })
+        } else {
+            dispatch({ type: 'CHANGE', val: event.target.value, validators: props.validators })
         }
     }
 

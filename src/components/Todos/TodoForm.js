@@ -1,9 +1,9 @@
 import React from 'react';
-import Input from './Form/Input';
-import { useForm } from '../hooks/useForm';
-import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from '../utils/validators';
+import Input from '../Form/Input';
+import { useForm } from '../../hooks/useForm';
+import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from '../../utils/validators';
 import './TodoForm.css'
-import Button from './UIElements/Button/Button';
+import Button from '../UIElements/Button/Button';
 
 const TodoForm = () => {
     const [formState, inputHandler] = useForm({

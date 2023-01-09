@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Button from '../components/UIElements/Button/Button';
-import Input from './Form/Input';
-import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from '../utils/validators';
+import Button from '../UIElements/Button/Button';
+import Input from '../Form/Input';
+import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from '../../utils/validators';
 import { useParams } from 'react-router-dom';
-import { useForm } from '../hooks/useForm';
-import Card from './UIElements/Card/Card';
+import { useForm } from '../../hooks/useForm';
+import Card from '../UIElements/Card/Card';
 
 const DUMMY_TODOS = [
     {

@@ -2,7 +2,7 @@ import React from 'react'
 
 import './TodoList.css'
 import TodoItem from './TodoItem'
-import Card from './UIElements/Card/Card'
+import Card from '../UIElements/Card/Card'
 
 const TodoList = (props) => {
     if (props.items.length === 0) {

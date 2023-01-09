@@ -1,6 +1,6 @@
 import React from 'react'
-import TodoForm from '../components/TodoForm'
-import UserTodos from '../components/UserTodos'
+import TodoForm from '../components/Todos/TodoForm'
+import UserTodos from '../components/Todos/UserTodos'
 import './Home.css'
 
 const Home = () => {
