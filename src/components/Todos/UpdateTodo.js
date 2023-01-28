@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Button from '../UIElements/Button/Button';
 import Input from '../Form/Input';
 import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from '../../utils/validators';
+import { AuthContext } from '../../context/auth-context';
 import { useParams } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import Card from '../UIElements/Card/Card';
@@ -43,6 +44,7 @@ const UpdateTodo = () => {
     }, true);
 
     const identifiedTodo = DUMMY_TODOS.find(t => t.id === todoId);
+    // const identifiedTodo = []/
 
     useEffect(() => {
         if (identifiedTodo) {
@@ -69,7 +71,6 @@ const UpdateTodo = () => {
 
     const submitHandler = (event) => {
         event.preventDefault();
-        console.log(formState.inputs);
     }
 
     if (!identifiedTodo) {
@@ -89,7 +90,6 @@ const UpdateTodo = () => {
             </div>
         );
     }
-    console.log("formState: ", formState);
 
     return (
         <form className="todo-form" onSubmit={submitHandler} >

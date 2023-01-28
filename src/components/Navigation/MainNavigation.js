@@ -15,7 +15,6 @@ const MainNavigation = (props) => {
     }
 
     const closeDrawerHandler = () => {
-        console.log('invoked!!!')
         setDrawerIsOpen(false)
     }
 

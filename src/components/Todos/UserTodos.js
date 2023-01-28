@@ -1,31 +1,44 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
-import TodoList from './TodoList'
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../context/auth-context';
+import TodoList from './TodoList';
+import { useHttpClient } from '../../hooks/useHttpClient';
+import ErrorModal from '../UIElements/Modal/ErrorModal';
+import LoadingSpinner from '../UIElements/Spinner/LoadingSpinner';
+import { fetchTodos } from '../../fetch/fetchTodos';
+import { TodoContext } from '../../context/todos-context';
 
-const DUMMY_TODOS = [
-    {
-        id: 't1',
-        title: 'Wash Clothes',
-        description: 'Do not forget to wash.',
-        dueDate: '01/01/20',
-        creator: 'u1'
-    },
-    {
-        id: 't2',
-        title: 'Clean dishes',
-        description: 'Do not forget to clean.',
-        dueDate: '01/02/20',
-        creator: 'u1'
-    }
-]
 const UserTodos = () => {
-    // const userId = useParams().userId;
-    const userId = 'u1'
-    const loadedTodos = DUMMY_TODOS.filter(todo => todo.creator === userId)
+    const { isLoading, error, clearError, sendRequest } = useHttpClient();
+
+    const auth = useContext(AuthContext);
+    const todos = useContext(TodoContext);
+
+    const userId = auth.userId;
+    useEffect(() => {
+        let loadedTodos = async () => {
+            try {
+                const result = await fetchTodos(sendRequest, userId);
+                todos.updateTodos(result);
+            } catch (err) { }
+        }
+        loadedTodos()
+    }, [sendRequest, userId]);
 
     return (
-        <TodoList items={loadedTodos} />
-    )
-}
+        <React.Fragment>
+            <ErrorModal error={error} onClear={clearError} />
+            {
+                isLoading &&
+                <div className='center'>
+                    <LoadingSpinner />
+                </div>
+            }
+            {
+                !isLoading && todos.todosList &&
+                <TodoList items={todos.todosList} />
+            }
+        </React.Fragment>
+    );
+};
 
 export default UserTodos

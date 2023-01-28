@@ -18,8 +18,8 @@ const TodoList = (props) => {
 
     return <ul className='todo-list'>
         {props.items.map(todo => <TodoItem
-            key={todo.id}
-            id={todo.id}
+            key={todo['_id']}
+            id={todo['_id']}
             title={todo.title}
             description={todo.description}
             creatorId={todo.creator}

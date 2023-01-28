@@ -5,19 +5,29 @@ import Auth from './pages/Auth';
 import Home from './pages/Home';
 import UpdateTodo from './components/Todos/UpdateTodo';
 import { AuthContext } from './context/auth-context'
+import { TodoContext } from './context/todos-context';
+import UserProfile from './pages/UserProfile';
 
 import './App.css';
 
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [todosList, setTodosList] = useState([]);
 
-  const login = useCallback(() => {
+  const login = useCallback((uid) => {
     setIsLoggedIn(true);
+    setUserId(uid);
   }, []);
 
   const logout = useCallback(() => {
     setIsLoggedIn(false);
+    setUserId(null);
+  }, []);
+
+  const updateTodos = useCallback((todos)=>{
+    setTodosList(todos);
   }, []);
 
   let routes;
@@ -28,8 +38,11 @@ function App() {
         <Route path="/" exact>
           <Home />
         </Route>
-        <Route path="/todos/:todoId">
+        <Route path="/todos/:todoId" exact>
           <UpdateTodo />
+        </Route>
+        <Route path="/users/:userId" exact>
+          <UserProfile />
         </Route>
         <Redirect to="/" />
       </ Switch>
@@ -38,27 +51,36 @@ function App() {
   else {
     routes = (
       <Switch>
-        <Auth />
+        <Route path="/auth">
+          <Auth />
+        </Route>
+
         <Redirect to="/auth" />
       </ Switch>
     )
   }
 
   return (
-    <AuthContext.Provider value={{
-      isLoggedIn: isLoggedIn,
-      login: login,
-      logout: logout
+    <TodoContext.Provider value={{
+      todosList: todosList,
+      updateTodos: updateTodos
     }}>
-      <Router>
-        <MainNavigation />
-        <main>
-          <Switch>
-            {routes}
-          </Switch >
-        </main>
-      </Router>
-    </AuthContext.Provider>
+      <AuthContext.Provider value={{
+        isLoggedIn: isLoggedIn,
+        userId: userId,
+        login: login,
+        logout: logout
+      }}>
+        <Router>
+          <MainNavigation />
+          <main>
+            <Switch>
+              {routes}
+            </Switch >
+          </main>
+        </Router>
+      </AuthContext.Provider>
+    </TodoContext.Provider>
   );
 }
 

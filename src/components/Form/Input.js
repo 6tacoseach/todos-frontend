@@ -1,10 +1,9 @@
-import React, { useReducer, useEffect } from 'react'
+import React, { useReducer, useEffect, useImperativeHandle, forwardRef } from 'react'
 import './input.css';
 import { validate } from '../../utils/validators';
 import { Switch } from 'antd';
 
 const inputReducer = (state, action) => {
-
     switch (action.type) {
         case 'CHANGE':
             return {
@@ -22,12 +21,13 @@ const inputReducer = (state, action) => {
     }
 }
 
-const Input = (props) => {
+const Input = forwardRef((props, ref) => {
     const [inputState, dispatch] = useReducer(inputReducer, {
         value: props.initialValue || '',
         isValid: props.initialValid || false,
         isTouched: false
-    })
+    });
+
     const { id, onInput } = props;
     const { value, isValid, isTouched } = inputState;
 
@@ -43,11 +43,18 @@ const Input = (props) => {
         }
     }
 
+    const resetInputHandler = () => {
+        dispatch({ type: 'CHANGE', val: '', validators: [] });
+    }
+
+    useImperativeHandle(ref, () => ({ resetInputHandler }));
+
     const touchHandler = () => {
         dispatch({
             type: 'TOUCH'
         })
     }
+
     let element;
     if (props.element === 'input') {
         element = <input
@@ -82,6 +89,6 @@ const Input = (props) => {
             {!inputState.isValid && isTouched && <p>{props.errorText}</p>}
         </div>
     )
-}
+})
 
 export default Input
