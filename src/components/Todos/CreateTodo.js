@@ -48,7 +48,7 @@ const CreateTodo = () => {
                     'Content-Type': 'application/json'
                 }
             );
-            resetInputHandler();
+            // resetInputHandler();
         } catch (err) {
             console.log('err', err);
         }
@@ -59,9 +59,9 @@ const CreateTodo = () => {
         } catch (err) { }
     };
 
-    const resetInputHandler = () => {
-        childRef.current.resetInputHandler()
-    }
+    // const resetInputHandler = () => {
+    //     childRef.current.resetInputHandler()
+    // }
 
     return (
         <React.Fragment>
@@ -77,7 +77,7 @@ const CreateTodo = () => {
                     validators={[VALIDATOR_REQUIRE()]}
                     errorText="Please enter a valid title"
                     onInput={inputHandler}
-                    resetInput={resetInputHandler}
+                    // resetInput={resetInputHandler}
                 />
                 <Input
                     ref={childRef}
@@ -87,7 +87,7 @@ const CreateTodo = () => {
                     validators={[VALIDATOR_MINLENGTH(6)]}
                     errorText="Please enter a valid description (at least 5 characters)"
                     onInput={inputHandler}
-                    resetInput={resetInputHandler}
+                    // resetInput={resetInputHandler}
                 />
                 <Button type='submit' disabled={!formState.isValid}>ADD TODO</Button>
             </form>

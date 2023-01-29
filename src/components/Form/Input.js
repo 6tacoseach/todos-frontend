@@ -43,11 +43,11 @@ const Input = forwardRef((props, ref) => {
         }
     }
 
-    const resetInputHandler = () => {
-        dispatch({ type: 'CHANGE', val: '', validators: [] });
-    }
+    // const resetInputHandler = () => {
+    //     dispatch({ type: 'CHANGE', val: '', validators: [] });
+    // }
 
-    useImperativeHandle(ref, () => ({ resetInputHandler }));
+    // useImperativeHandle(ref, () => ({ resetInputHandler }));
 
     const touchHandler = () => {
         dispatch({

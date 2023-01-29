@@ -2,30 +2,20 @@ import React, { useState, useEffect, useContext } from 'react';
 import Button from '../UIElements/Button/Button';
 import Input from '../Form/Input';
 import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from '../../utils/validators';
-import { AuthContext } from '../../context/auth-context';
-import { useParams } from 'react-router-dom';
+import { useHttpClient } from '../../hooks/useHttpClient';
+import { useHistory, useParams } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import Card from '../UIElements/Card/Card';
-
-const DUMMY_TODOS = [
-    {
-        id: 't1',
-        title: 'Empire State Building',
-        description: 'One of the most famous buildings in the world.',
-        complete: 'false',
-        creator: 'u1'
-    },
-    {
-        id: 't2',
-        title: 'Empire State Building',
-        description: 'One of the most famous buildings in the world.',
-        complete: 'false',
-        creator: 'u2'
-    }
-];
+import LoadingSpinner from '../UIElements/Spinner/LoadingSpinner';
+import ErrorModal from '../UIElements/Modal/ErrorModal';
+import { AuthContext } from '../../context/auth-context';
 
 const UpdateTodo = () => {
-    const [isLoading, setIsLoading] = useState(true);
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+    const [loadedTodo, setLoadedTodo] = useState();
+    const history = useHistory();
+    const auth = useContext(AuthContext);
+
     const todoId = useParams().todoId;
 
     const [formState, inputHandler, setFormData] = useForm({
@@ -43,37 +33,69 @@ const UpdateTodo = () => {
         }
     }, true);
 
-    const identifiedTodo = DUMMY_TODOS.find(t => t.id === todoId);
-    // const identifiedTodo = []/
+    useEffect(() => {
+        const fetchTodo = async () => {
+            const httpAbortCtrl = new AbortController();
+            try {
+                const responseData = await sendRequest(`http://localhost:5050/api/todos/${todoId}`, httpAbortCtrl);
+                // console.log('todo: ', responseData.todo);
+                setLoadedTodo(responseData.todo);
+            } catch (err) { }
+
+        }
+        fetchTodo();
+    }, [sendRequest, todoId])
 
     useEffect(() => {
-        if (identifiedTodo) {
+        if (loadedTodo) {
             setFormData(
                 {
                     title: {
-                        value: identifiedTodo.title,
+                        value: loadedTodo.title,
                         isValid: true
                     },
                     description: {
-                        value: identifiedTodo.description,
+                        value: loadedTodo.description,
                         isValid: true
                     },
                     complete: {
-                        value: identifiedTodo.complete,
+                        value: loadedTodo.complete,
                         isValid: true
                     }
                 },
                 true
             );
-        }
-        setIsLoading(false);
-    }, [setFormData, identifiedTodo]);
+        };
+        // setIsLoading(false);
+    }, [setFormData, loadedTodo]);
 
-    const submitHandler = (event) => {
+    const submitHandler = async (event) => {
+        console.log("title: ", formState.inputs.title.value);
+        console.log("description: ", formState.inputs.description.value);
+        console.log("complete: ", formState.inputs.complete.value);
+
+        const httpAbortCtrl = new AbortController();
         event.preventDefault();
+        try {
+            await sendRequest(`http://localhost:5050/api/todos/${todoId}`, httpAbortCtrl, 'PATCH', JSON.stringify({
+                title: formState.inputs.title.value,
+                description: formState.inputs.description.value,
+                complete: formState.inputs.complete.value,
+            }), { 'Content-Type': 'application/json' })
+
+            history.push(`/${auth.userId}`);
+        } catch (err) { }
     }
 
-    if (!identifiedTodo) {
+    if (isLoading) {
+        return (
+            <div className="center">
+                <LoadingSpinner />
+            </div>
+        );
+    }
+
+    if (!loadedTodo && !error) {
         return (
             <div className="center">
                 <Card>
@@ -83,57 +105,52 @@ const UpdateTodo = () => {
         );
     };
 
-    if (isLoading) {
-        return (
-            <div className="center">
-                <h2>Loading...</h2>
-            </div>
-        );
-    }
-
     return (
-        <form className="todo-form" onSubmit={submitHandler} >
-            <Input
-                id="title"
-                element="input"
-                type="text"
-                label="Title"
-                validators={[VALIDATOR_REQUIRE()]}
-                errorText="Please enter a valid title"
-                onInput={inputHandler}
-                initialValid={formState.inputs.title.isValid}
-                initialValue={formState.inputs.title.value}
-            />
-            <Input
-                id="description"
-                element="textarea"
-                label="Description"
-                validators={[VALIDATOR_MINLENGTH(5)]}
-                errorText="Please enter a valid description (min. 5 characters)"
-                onInput={inputHandler}
-                initialValid={formState.inputs.description.isValid}
-                initialValue={formState.inputs.description.value}
-            />
-            <div>
-                <h3>Status</h3>
+        <React.Fragment>
+            <ErrorModal error={error} onClear={clearError} />
+            {!isLoading && loadedTodo && <form className="todo-form" onSubmit={submitHandler} >
+                <Input
+                    id="title"
+                    element="input"
+                    type="text"
+                    label="Title"
+                    validators={[VALIDATOR_REQUIRE()]}
+                    errorText="Please enter a valid title"
+                    onInput={inputHandler}
+                    initialValid={true}
+                    initialValue={loadedTodo.title}
+                />
+                <Input
+                    id="description"
+                    element="textarea"
+                    label="Description"
+                    validators={[VALIDATOR_MINLENGTH(5)]}
+                    errorText="Please enter a valid description (min. 5 characters)"
+                    onInput={inputHandler}
+                    initialValid={true}
+                    initialValue={loadedTodo.description}
+                />
                 <div>
+                    <h3>Status</h3>
+                    <div>
 
-                    <Input
-                        id="complete"
-                        validators={[]}
-                        element=""
-                        onInput={inputHandler}
-                        initialValue={false}
-                        initialValid={true}
-                    />
-                    <h4>{formState.inputs.complete.value ? 'Complete' : 'Not Complete'}</h4>
+                        <Input
+                            id="complete"
+                            validators={[]}
+                            element=""
+                            onInput={inputHandler}
+                            initialValue={false}
+                            initialValid={true}
+                        />
+                        <h4>{formState.inputs.complete.value ? 'Complete' : 'Not Complete'}</h4>
+                    </div>
                 </div>
-            </div>
 
-            <Button type="submit" disabled={!formState.isValid}>
-                Update Todo
-            </Button>
-        </form>
+                <Button type="submit" disabled={!formState.isValid}>
+                    Update Todo
+                </Button>
+            </form>}
+        </React.Fragment>
     )
 };
 

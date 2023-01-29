@@ -17,9 +17,9 @@ export const useHttpClient = () => {
                     headers,
                     signal: httpAbortCtrl.signal
                 });
-
+                
                 const responseData = await response.json();
-            
+                
                 activeHttpRequests.current = activeHttpRequests.current.filter(reqCtrl => reqCtrl !== httpAbortCtrl)
 
                 if (!response.ok) {
@@ -47,7 +47,8 @@ export const useHttpClient = () => {
 
     useEffect(() => {
         return () => {
-            //  activeHttpRequests.current.forEach(abortCtrl => abortCtrl.abort());
+            console.log("useEffect in hook is running! - abort controller aborted - updated")
+            // activeHttpRequests.current.forEach(abortCtrl => abortCtrl.abort());
         }
     }, []);
 
