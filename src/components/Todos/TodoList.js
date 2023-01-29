@@ -23,6 +23,7 @@ const TodoList = (props) => {
             title={todo.title}
             description={todo.description}
             creatorId={todo.creator}
+            onDelete={props.onDeleteTodo}
         />)}
     </ul>
 }

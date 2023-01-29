@@ -70,19 +70,16 @@ const UpdateTodo = () => {
     }, [setFormData, loadedTodo]);
 
     const submitHandler = async (event) => {
-        console.log("title: ", formState.inputs.title.value);
-        console.log("description: ", formState.inputs.description.value);
-        console.log("complete: ", formState.inputs.complete.value);
-
         const httpAbortCtrl = new AbortController();
         event.preventDefault();
+
         try {
             await sendRequest(`http://localhost:5050/api/todos/${todoId}`, httpAbortCtrl, 'PATCH', JSON.stringify({
                 title: formState.inputs.title.value,
                 description: formState.inputs.description.value,
                 complete: formState.inputs.complete.value,
-            }), { 'Content-Type': 'application/json' })
-
+            }), { 'Content-Type': 'application/json' });
+            
             history.push(`/${auth.userId}`);
         } catch (err) { }
     }

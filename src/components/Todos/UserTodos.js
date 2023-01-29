@@ -18,11 +18,18 @@ const UserTodos = () => {
         let loadedTodos = async () => {
             try {
                 const result = await fetchTodos(sendRequest, userId);
+                // const filteredTodos = result.filter((todo) => todo.isDeleted !== true);
+                console.log('result: ', result);
+                // console.log('filteredResults: ', filteredTodos);
                 todos.updateTodos(result);
             } catch (err) { }
         }
         loadedTodos()
     }, [sendRequest, userId]);
+
+    const todoDeleteHandler = (deletedTodoId) => {
+        todos.updateTodos(prevTodos => prevTodos.filter(todo => todo.id !== deletedTodoId));
+    }
 
     return (
         <React.Fragment>
@@ -35,7 +42,7 @@ const UserTodos = () => {
             }
             {
                 !isLoading && todos.todosList &&
-                <TodoList items={todos.todosList} />
+                <TodoList items={todos.todosList} onDeleteTodo={todoDeleteHandler} />
             }
         </React.Fragment>
     );
