@@ -14,17 +14,17 @@ const UserTodos = () => {
     const todos = useContext(TodoContext);
 
     const userId = auth.userId;
+    const token = auth.token;
+
     useEffect(() => {
         let loadedTodos = async () => {
             try {
-                const result = await fetchTodos(sendRequest, userId);
-                // const filteredTodos = result.filter((todo) => todo.isDeleted !== true);
-                console.log('result: ', result);
-                // console.log('filteredResults: ', filteredTodos);
-                todos.updateTodos(result);
+                const result = await fetchTodos(sendRequest, userId, token);
+                const filteredTodos = result.filter((todo) => todo.isDeleted !== true);
+                todos.updateTodos(filteredTodos);
             } catch (err) { }
         }
-        loadedTodos()
+        loadedTodos();
     }, [sendRequest, userId]);
 
     const todoDeleteHandler = (deletedTodoId) => {
@@ -42,7 +42,7 @@ const UserTodos = () => {
             }
             {
                 !isLoading && todos.todosList &&
-                <TodoList items={todos.todosList} onDeleteTodo={todoDeleteHandler} />
+                <TodoList items={todos.todosList} onDeleteTodo={todoDeleteHandler} token={token} />
             }
         </React.Fragment>
     );

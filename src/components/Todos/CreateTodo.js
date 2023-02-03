@@ -45,6 +45,7 @@ const CreateTodo = () => {
                     creatorId: auth.userId
                 }),
                 {
+                    Authorization: 'Bearer ' + auth.token,
                     'Content-Type': 'application/json'
                 }
             );
@@ -54,7 +55,7 @@ const CreateTodo = () => {
         }
 
         try {
-            const loadedTodos = await fetchTodos(sendRequest, auth.userId);
+            const loadedTodos = await fetchTodos(sendRequest, auth.userId, auth.token);
             todos.updateTodos(loadedTodos);
         } catch (err) { }
     };

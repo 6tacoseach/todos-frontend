@@ -47,7 +47,6 @@ export const useHttpClient = () => {
 
     useEffect(() => {
         return () => {
-            console.log("useEffect in hook is running! - abort controller aborted - updated")
             // activeHttpRequests.current.forEach(abortCtrl => abortCtrl.abort());
         }
     }, []);

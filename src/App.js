@@ -12,27 +12,28 @@ import './App.css';
 
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
   const [todosList, setTodosList] = useState([]);
 
-  const login = useCallback((uid) => {
-    setIsLoggedIn(true);
+  const login = useCallback((uid, token) => {
+
+    setToken(token);
     setUserId(uid);
   }, []);
 
   const logout = useCallback(() => {
-    setIsLoggedIn(false);
+    setToken(false);
     setUserId(null);
   }, []);
 
-  const updateTodos = useCallback((todos)=>{
+  const updateTodos = useCallback((todos) => {
     setTodosList(todos);
   }, []);
 
   let routes;
 
-  if (isLoggedIn) {
+  if (token) {
     routes = (
       <Switch>
         <Route path="/" exact>
@@ -66,7 +67,8 @@ function App() {
       updateTodos: updateTodos
     }}>
       <AuthContext.Provider value={{
-        isLoggedIn: isLoggedIn,
+        isLoggedIn: !!token,
+        token: token,
         userId: userId,
         login: login,
         logout: logout

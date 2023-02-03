@@ -11,7 +11,6 @@ const TodoItem = (props) => {
     const { isLoading, error, clearError, sendRequest } = useHttpClient()
     const [showDeleteWarning, setShowDeleteWarning] = useState(false);
 
-
     const openDeleteWarningHandler = () => setShowDeleteWarning(true);
 
     const closeDeleteWarningMapHandler = () => setShowDeleteWarning(false);
@@ -20,7 +19,9 @@ const TodoItem = (props) => {
         const httpAbortCtrl = new AbortController();
         closeDeleteWarningMapHandler(false);
         try {
-            await sendRequest(`http://localhost:5050/api/todos/${props.id}`, httpAbortCtrl, 'DELETE');
+            await sendRequest(`http://localhost:5050/api/todos/${props.id}`, httpAbortCtrl, 'DELETE', null, {
+                Authorization: 'Bearer ' + props.token
+            });
             props.onDelete(props.id);
         } catch (err) { }
 

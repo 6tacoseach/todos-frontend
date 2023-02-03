@@ -75,12 +75,14 @@ const Auth = () => {
           {
             'Content-Type': 'application/json'
           })
-
-        auth.login(responseData.user.id);
-      } catch (err) { }
+        auth.login(responseData.userId, responseData.token);
+      } catch (err) {
+      }
     } else {
       try {
-        await sendRequest('http://localhost:5050/api/users/signup',
+        const httpAbortCtrl = new AbortController();
+        const responseData = await sendRequest('http://localhost:5050/api/users/signup',
+          httpAbortCtrl,
           'POST',
           JSON.stringify({
             name: formState.inputs.name.value,
@@ -90,8 +92,9 @@ const Auth = () => {
           {
             'Content-Type': 'application/json'
           }
-        )
-        auth.login();
+        );
+
+        auth.login(responseData.userId, responseData.token);
       } catch (err) { }
     }
   };

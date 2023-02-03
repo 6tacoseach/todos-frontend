@@ -17,6 +17,7 @@ const UpdateTodo = () => {
     const auth = useContext(AuthContext);
 
     const todoId = useParams().todoId;
+    const token = auth.token;
 
     const [formState, inputHandler, setFormData] = useForm({
         title: {
@@ -34,16 +35,18 @@ const UpdateTodo = () => {
     }, true);
 
     useEffect(() => {
-        const fetchTodo = async () => {
+        const getTodo = async () => {
             const httpAbortCtrl = new AbortController();
             try {
-                const responseData = await sendRequest(`http://localhost:5050/api/todos/${todoId}`, httpAbortCtrl);
+                const responseData = await sendRequest(`http://localhost:5050/api/todos/${todoId}`, httpAbortCtrl, {
+                    Authorization: 'Bearer ' + token
+                });
                 // console.log('todo: ', responseData.todo);
                 setLoadedTodo(responseData.todo);
             } catch (err) { }
 
         }
-        fetchTodo();
+        getTodo();
     }, [sendRequest, todoId])
 
     useEffect(() => {
@@ -78,8 +81,8 @@ const UpdateTodo = () => {
                 title: formState.inputs.title.value,
                 description: formState.inputs.description.value,
                 complete: formState.inputs.complete.value,
-            }), { 'Content-Type': 'application/json' });
-            
+            }), { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token });
+
             history.push(`/${auth.userId}`);
         } catch (err) { }
     }

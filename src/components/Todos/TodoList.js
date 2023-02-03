@@ -18,12 +18,13 @@ const TodoList = (props) => {
 
     return <ul className='todo-list'>
         {props.items.map(todo => <TodoItem
-            key={todo['_id']}
             id={todo['_id']}
+            key={todo['_id']}
             title={todo.title}
             description={todo.description}
-            creatorId={todo.creator}
             onDelete={props.onDeleteTodo}
+            creatorId={todo.creator}
+            token={props.token}
         />)}
     </ul>
 }
