@@ -18,8 +18,9 @@ const UserTodos = () => {
 
     useEffect(() => {
         let loadedTodos = async () => {
+            const httpAbortCtrl = new AbortController();
             try {
-                const result = await fetchTodos(sendRequest, userId, token);
+                const result = await fetchTodos(sendRequest, httpAbortCtrl, userId, token);
                 const filteredTodos = result.filter((todo) => todo.isDeleted !== true);
                 todos.updateTodos(filteredTodos);
             } catch (err) { }

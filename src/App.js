@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
+import { useAuth } from './hooks/useAuth';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import MainNavigation from './components/Navigation/MainNavigation';
 import Auth from './pages/Auth';
@@ -10,28 +11,10 @@ import UserProfile from './pages/UserProfile';
 
 import './App.css';
 
-
 function App() {
-  const [token, setToken] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [todosList, setTodosList] = useState([]);
-
-  const login = useCallback((uid, token) => {
-
-    setToken(token);
-    setUserId(uid);
-  }, []);
-
-  const logout = useCallback(() => {
-    setToken(false);
-    setUserId(null);
-  }, []);
-
-  const updateTodos = useCallback((todos) => {
-    setTodosList(todos);
-  }, []);
 
   let routes;
+  let { token, userId, todosList, login, logout, updateTodos } = useAuth();
 
   if (token) {
     routes = (

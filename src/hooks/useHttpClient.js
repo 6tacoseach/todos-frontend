@@ -17,9 +17,9 @@ export const useHttpClient = () => {
                     headers,
                     signal: httpAbortCtrl.signal
                 });
-                
+
                 const responseData = await response.json();
-                
+
                 activeHttpRequests.current = activeHttpRequests.current.filter(reqCtrl => reqCtrl !== httpAbortCtrl)
 
                 if (!response.ok) {
@@ -47,7 +47,10 @@ export const useHttpClient = () => {
 
     useEffect(() => {
         return () => {
-            // activeHttpRequests.current.forEach(abortCtrl => abortCtrl.abort());
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            console.log('aborting!!!')
+            activeHttpRequests.current.forEach(abortCtrl => abortCtrl.abort());
+
         }
     }, []);
 

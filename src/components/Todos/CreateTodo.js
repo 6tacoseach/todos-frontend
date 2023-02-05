@@ -13,9 +13,7 @@ import { fetchTodos } from '../../fetch/fetchTodos';
 
 const CreateTodo = () => {
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
-    const httpAbortCtrl = new AbortController();
     const childRef = useRef();
-
 
     const [formState, inputHandler] = useForm({
         title: {
@@ -30,9 +28,9 @@ const CreateTodo = () => {
 
     const auth = useContext(AuthContext);
     const todos = useContext(TodoContext);
-
     const todoSubmitHandler = async event => {
         event.preventDefault();
+        const httpAbortCtrl = new AbortController();
         try {
             await sendRequest(
                 'http://localhost:5050/api/todos',
@@ -55,14 +53,11 @@ const CreateTodo = () => {
         }
 
         try {
-            const loadedTodos = await fetchTodos(sendRequest, auth.userId, auth.token);
+            const loadedTodos = await fetchTodos(sendRequest, httpAbortCtrl, auth.userId, auth.token);
+            console.log('loadedTodos: ', loadedTodos)
             todos.updateTodos(loadedTodos);
         } catch (err) { }
     };
-
-    // const resetInputHandler = () => {
-    //     childRef.current.resetInputHandler()
-    // }
 
     return (
         <React.Fragment>
@@ -78,7 +73,7 @@ const CreateTodo = () => {
                     validators={[VALIDATOR_REQUIRE()]}
                     errorText="Please enter a valid title"
                     onInput={inputHandler}
-                    // resetInput={resetInputHandler}
+                // resetInput={resetInputHandler}
                 />
                 <Input
                     ref={childRef}
@@ -88,7 +83,7 @@ const CreateTodo = () => {
                     validators={[VALIDATOR_MINLENGTH(6)]}
                     errorText="Please enter a valid description (at least 5 characters)"
                     onInput={inputHandler}
-                    // resetInput={resetInputHandler}
+                // resetInput={resetInputHandler}
                 />
                 <Button type='submit' disabled={!formState.isValid}>ADD TODO</Button>
             </form>

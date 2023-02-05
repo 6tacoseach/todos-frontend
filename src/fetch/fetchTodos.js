@@ -1,6 +1,4 @@
-export const fetchTodos = async (sendRequest, userId, token) => {
-    const httpAbortCtrl = new AbortController();
-    console.log('token: ', token)
+export const fetchTodos = async (sendRequest, httpAbortCtrl, userId, token) => {
     try {
         const responseData = await sendRequest(
             `http://localhost:5050/api/todos/user/${userId}`,
@@ -13,6 +11,6 @@ export const fetchTodos = async (sendRequest, userId, token) => {
         );
         return responseData.todos
     } catch (err) {
-        console.log('This is the current error; ', err);
+        console.log(err);
     }
 }
