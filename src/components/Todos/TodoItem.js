@@ -19,7 +19,7 @@ const TodoItem = (props) => {
         const httpAbortCtrl = new AbortController();
         closeDeleteWarningMapHandler(false);
         try {
-            await sendRequest(`http://localhost:5050/api/todos/${props.id}`, httpAbortCtrl, 'DELETE', null, {
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/todos/${props.id}`, httpAbortCtrl, 'DELETE', null, {
                 Authorization: 'Bearer ' + props.token
             });
             props.onDelete(props.id);

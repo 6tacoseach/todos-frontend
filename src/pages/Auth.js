@@ -65,7 +65,7 @@ const Auth = () => {
     if (isLoginMode) {
       try {
         const responseData = await sendRequest(
-          'http://localhost:5050/api/users/login',
+          `${process.env.REACT_APP_BACKEND_URL}/users/login`,
           httpAbortCtrl,
           'POST',
           JSON.stringify({
@@ -81,7 +81,7 @@ const Auth = () => {
     } else {
       try {
         const httpAbortCtrl = new AbortController();
-        const responseData = await sendRequest('http://localhost:5050/api/users/signup',
+        const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/signup`,
           httpAbortCtrl,
           'POST',
           JSON.stringify({

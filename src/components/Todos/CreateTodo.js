@@ -33,7 +33,7 @@ const CreateTodo = () => {
         const httpAbortCtrl = new AbortController();
         try {
             await sendRequest(
-                'http://localhost:5050/api/todos',
+                process.env.REACT_APP_BACKEND_URL,
                 httpAbortCtrl,
                 'POST',
                 JSON.stringify({

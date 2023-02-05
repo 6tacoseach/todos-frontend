@@ -1,7 +1,7 @@
 export const fetchTodos = async (sendRequest, httpAbortCtrl, userId, token) => {
     try {
         const responseData = await sendRequest(
-            `http://localhost:5050/api/todos/user/${userId}`,
+            `${process.env.REACT_APP_BACKEND_URL}/todos/user/${userId}`,
             httpAbortCtrl,
             'GET',
             null,

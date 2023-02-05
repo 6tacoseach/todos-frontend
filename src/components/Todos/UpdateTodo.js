@@ -38,7 +38,7 @@ const UpdateTodo = () => {
         const getTodo = async () => {
             const httpAbortCtrl = new AbortController();
             try {
-                const responseData = await sendRequest(`http://localhost:5050/api/todos/${todoId}`, httpAbortCtrl, {
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/todos/${todoId}`, httpAbortCtrl, {
                     Authorization: 'Bearer ' + token
                 });
                 // console.log('todo: ', responseData.todo);
@@ -77,7 +77,7 @@ const UpdateTodo = () => {
         event.preventDefault();
 
         try {
-            await sendRequest(`http://localhost:5050/api/todos/${todoId}`, httpAbortCtrl, 'PATCH', JSON.stringify({
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/todos/${todoId}`, httpAbortCtrl, 'PATCH', JSON.stringify({
                 title: formState.inputs.title.value,
                 description: formState.inputs.description.value,
                 complete: formState.inputs.complete.value,
